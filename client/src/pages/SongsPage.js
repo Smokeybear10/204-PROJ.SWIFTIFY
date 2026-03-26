@@ -181,7 +181,7 @@ export default function SongsPage() {
             <p className="sw-slider-label" style={{ marginBottom: '0.5rem' }}>Duration</p>
             <Slider
               value={duration}
-              min={60} max={660} step={10}
+              min={60} max={660} step={1}
               onChange={(e, v) => setDuration(v)}
               valueLabelDisplay="auto"
               valueLabelFormat={v => <div>{formatDuration(v)}</div>}

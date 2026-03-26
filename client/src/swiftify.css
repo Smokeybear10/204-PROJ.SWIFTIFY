@@ -323,7 +323,7 @@ a.sw-link:hover, .sw-link:hover { color: var(--pink-100); }
   font-size: 0.95rem;
   cursor: pointer;
   transition: background 0.2s, transform 0.1s;
-  box-shadow: 0 4px 14px rgba(236,72,153,0.3);
+  box-shadow: 0 2px 8px rgba(236,72,153,0.15);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -754,7 +754,7 @@ a.sw-link:hover, .sw-link:hover { color: var(--pink-100); }
   z-index: 10;
   backdrop-filter: blur(8px);
 }
-.sw-carousel-btn:hover { background: rgba(236,72,153,0.8); border-color: transparent; }
+.sw-carousel-btn:hover { background: rgba(236,72,153,0.3); border-color: rgba(249,168,212,0.4); }
 .sw-carousel-btn--prev { left: 1rem; }
 .sw-carousel-btn--next { right: 1rem; }
 

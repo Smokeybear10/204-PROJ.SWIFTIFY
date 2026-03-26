@@ -15,7 +15,10 @@ export default function HomePage() {
     '/img/taylor-2.png', 
     '/img/taylor-3.png', 
     '/img/taylor-4.avif', 
-    '/img/taylor-5.webp'
+    '/img/taylor-5.webp',
+    '/img/taylor-6.png',
+    '/img/taylor-7.png',
+    '/img/taylor-8.png'
   ];
   const [currentHeroIdx, setCurrentHeroIdx] = useState(0);
 
@@ -121,20 +124,31 @@ export default function HomePage() {
             border: '1px solid rgba(255,255,255,0.08)' 
           }}
         >
-          <div style={{
-            display: 'flex', width: '100%', height: '100%',
-            transform: `translateX(-${currentHeroIdx * 100}%)`,
-            transition: 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)'
-          }}>
-            {heroImages.map((src, idx) => (
+          {heroImages.map((src, idx) => {
+            let offset = idx - currentHeroIdx;
+            // Wrap the offsets for infinite looping behavior
+            if (currentHeroIdx === heroImages.length - 1 && idx === 0) offset = 1;
+            if (currentHeroIdx === 0 && idx === heroImages.length - 1) offset = -1;
+            
+            // Only transition the active, next, and prev elements so they don't slide wildly when wrapping
+            const isVisible = Math.abs(offset) <= 1;
+
+            return (
               <img 
                 key={src}
                 src={src} 
                 alt={`Taylor Swift slide ${idx}`} 
-                style={{ flex: '0 0 100%', width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ 
+                  position: 'absolute', top: 0, left: 0,
+                  width: '100%', height: '100%', objectFit: 'cover',
+                  transform: `translateX(${offset * 100}%)`,
+                  transition: isVisible ? 'transform 0.65s cubic-bezier(0.25, 1, 0.5, 1)' : 'none',
+                  visibility: isVisible ? 'visible' : 'hidden',
+                  zIndex: offset === 0 ? 2 : 1
+                }}
               />
-            ))}
-          </div>
+            )
+          })}
           <button className="sw-carousel-btn sw-carousel-btn--prev" onClick={handlePrev}>❮</button>
           <button className="sw-carousel-btn sw-carousel-btn--next" onClick={handleNext}>❯</button>
         </div>
