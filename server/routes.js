@@ -25,8 +25,8 @@ connection.connect((err) => err && console.log(err));
 // Route 1: GET /author/:type
 const author = async function(req, res) {
   // Replace with your name and pennkey for submission; values must differ from defaults and from each other (see tests).
-  const name = 'Taylor Swift Fan';
-  const pennkey = 'tsfan';
+  const name = 'Thomas Ou';
+  const pennkey = 'thomasou';
 
   // checks the value of type in the request parameters
   // note that parameters are required and are specified in server.js in the endpoint by a colon (e.g. /author/:type)
@@ -318,7 +318,7 @@ const entrance_songs = async function(req, res) {
      FROM Songs s
      JOIN Albums a ON s.album_id = a.album_id
      WHERE s.energy <= $1 AND s.danceability >= $2
-     ORDER BY s.title ASC
+     ORDER BY s.valence DESC, s.danceability DESC
      LIMIT $3`,
     [maxEnergy, minDanceability, limit],
     (err, data) => {
