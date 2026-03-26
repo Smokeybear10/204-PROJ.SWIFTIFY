@@ -7,9 +7,18 @@ export default function LazyTable({ route, columns, defaultPageSize, rowsPerPage
   const [pageSize, setPageSize] = useState(defaultPageSize ?? 10);
 
   useEffect(() => {
-    fetch(`${route}?page=${page}&page_size=${pageSize}`)
+    const url = `${route}?page=${page}&page_size=${pageSize}`;
+    const cacheKey = `sw_cache_${btoa(url)}`;
+    fetch(url)
       .then(res => res.json())
-      .then(resJson => setData(resJson));
+      .then(resJson => {
+        setData(resJson);
+        localStorage.setItem(cacheKey, JSON.stringify(resJson));
+      })
+      .catch(() => {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) setData(JSON.parse(cached));
+      });
   }, [route, page, pageSize]);
 
   const handleChangePage = (e, newPage) => {

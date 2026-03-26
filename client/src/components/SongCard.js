@@ -21,10 +21,23 @@ export default function SongCard({ songId, handleClose }) {
       .then(res => res.json())
       .then((resJson) => {
         setSongData(resJson);
+        localStorage.setItem(`sw_cache_song_${songId}`, JSON.stringify(resJson));
         return fetch(`http://${config.server_host}:${config.server_port}/album/${resJson.album_id}`);
       })
       .then(res => res.json())
-      .then(resJson => setAlbumData(resJson));
+      .then(resJson => {
+        setAlbumData(resJson);
+        localStorage.setItem(`sw_cache_album_${resJson.album_id}`, JSON.stringify(resJson));
+      })
+      .catch(() => {
+        const cachedSong = localStorage.getItem(`sw_cache_song_${songId}`);
+        if (cachedSong) {
+          const parsed = JSON.parse(cachedSong);
+          setSongData(parsed);
+          const cachedAlbum = localStorage.getItem(`sw_cache_album_${parsed.album_id}`);
+          if (cachedAlbum) setAlbumData(JSON.parse(cachedAlbum));
+        }
+      });
   }, [songId]);
 
   const chartData = [

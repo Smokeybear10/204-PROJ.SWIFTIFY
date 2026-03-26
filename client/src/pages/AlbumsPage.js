@@ -8,7 +8,14 @@ export default function AlbumsPage() {
   useEffect(() => {
     fetch(`http://${config.server_host}:${config.server_port}/albums`)
       .then(res => res.json())
-      .then(resJson => setAlbums(resJson));
+      .then(resJson => {
+        setAlbums(resJson);
+        localStorage.setItem('sw_cache_albums', JSON.stringify(resJson));
+      })
+      .catch(() => {
+        const cached = localStorage.getItem('sw_cache_albums');
+        if (cached) setAlbums(JSON.parse(cached));
+      });
   }, []);
 
   return (
@@ -19,15 +26,20 @@ export default function AlbumsPage() {
       </p>
       <div className="sw-albums-grid">
         {albums.map((album) => (
-          <div key={album.album_id} className="sw-album-card">
+          <NavLink
+            key={album.album_id}
+            to={`/albums/${album.album_id}`}
+            className="sw-album-card"
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
             <img
               src={album.thumbnail_url}
               alt={`${album.title} album art`}
             />
             <h4>
-              <NavLink to={`/albums/${album.album_id}`}>{album.title}</NavLink>
+              {album.title}
             </h4>
-          </div>
+          </NavLink>
         ))}
       </div>
     </div>

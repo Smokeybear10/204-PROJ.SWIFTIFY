@@ -16,11 +16,25 @@ export default function AlbumInfoPage() {
   useEffect(() => {
     fetch(`http://${config.server_host}:${config.server_port}/album/${album_id}`)
       .then(res => res.json())
-      .then(resJson => setAlbumData(resJson));
+      .then(resJson => {
+        setAlbumData(resJson);
+        localStorage.setItem(`sw_cache_albuminfo_${album_id}`, JSON.stringify(resJson));
+      })
+      .catch(() => {
+        const cached = localStorage.getItem(`sw_cache_albuminfo_${album_id}`);
+        if (cached) setAlbumData(JSON.parse(cached));
+      });
 
     fetch(`http://${config.server_host}:${config.server_port}/album_songs/${album_id}`)
       .then(res => res.json())
-      .then(resJson => setSongData(resJson));
+      .then(resJson => {
+        setSongData(resJson);
+        localStorage.setItem(`sw_cache_albumsongs_${album_id}`, JSON.stringify(resJson));
+      })
+      .catch(() => {
+        const cached = localStorage.getItem(`sw_cache_albumsongs_${album_id}`);
+        if (cached) setSongData(JSON.parse(cached));
+      });
   }, [album_id]);
 
   return (
@@ -28,6 +42,23 @@ export default function AlbumInfoPage() {
       {selectedSongId && (
         <SongCard songId={selectedSongId} handleClose={() => setSelectedSongId(null)} />
       )}
+
+      {/* Back button */}
+      <NavLink
+        to="/albums"
+        className="sw-link"
+        style={{
+          display: 'inline-block',
+          marginBottom: '1.5rem',
+          fontFamily: 'var(--font-display)',
+          fontSize: '0.75rem',
+          fontWeight: 700,
+          letterSpacing: '0.1em',
+          textTransform: 'uppercase',
+        }}
+      >
+        ← Back to Albums
+      </NavLink>
 
       {/* Album header */}
       <div className="sw-album-info-header">

@@ -103,16 +103,18 @@ body::after {
   top: 0;
   z-index: 1000;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 2rem;
   padding: 0 2.5rem;
-  height: 60px;
-  background: rgba(10, 5, 8, 0.8);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-bottom: 1px solid var(--glass-border);
-  box-shadow: 0 1px 0 rgba(212, 115, 154, 0.08);
+  height: 72px;
+  background: rgba(10, 5, 8, 0.4);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border-bottom: 1px solid rgba(212, 115, 154, 0.08);
 }
+
+.sw-navbar__left { display: flex; align-items: center; }
+.sw-navbar__right { display: flex; align-items: center; gap: 2.5rem; }
 
 .sw-navbar__brand {
   font-family: var(--font-display);
@@ -152,7 +154,7 @@ body::after {
   transition: width 0.3s ease;
 }
 .sw-navbar__link:hover,
-.sw-navbar__link.active { color: var(--pink-300); text-shadow: 0 0 12px rgba(212, 115, 154, 0.35); }
+.sw-navbar__link.active { color: var(--pink-300); }
 .sw-navbar__link:hover::after,
 .sw-navbar__link.active::after { width: 100%; }
 
@@ -310,6 +312,46 @@ a.sw-link, .sw-link {
 a.sw-link:hover, .sw-link:hover { color: var(--pink-100); }
 
 /* ---- Buttons ---- */
+.sw-btn-natural {
+  background: var(--pink-600);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  box-shadow: 0 4px 14px rgba(236,72,153,0.3);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+.sw-btn-natural:hover { background: var(--pink-500); transform: translateY(-1px); }
+.sw-btn-natural:active { transform: translateY(0); box-shadow: 0 2px 8px rgba(236,72,153,0.2); }
+
+.sw-btn-natural-outline {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+.sw-btn-natural-outline:hover { 
+  background: rgba(255,255,255,0.05); 
+  border-color: rgba(255,255,255,0.2); 
+}
 .sw-btn {
   font-family: var(--font-display);
   font-weight: 700;
@@ -376,7 +418,12 @@ a.sw-link:hover, .sw-link:hover { color: var(--pink-100); }
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--pink-300);
-  margin-bottom: 0.5rem;
+}
+.sw-slider-value {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ---- Modal / SongCard ---- */
@@ -451,9 +498,57 @@ a.sw-link:hover, .sw-link:hover { color: var(--pink-100); }
 }
 
 /* ---- Homepage hero ---- */
-.sw-hero {
-  text-align: center;
-  padding: 3rem 0 2rem;
+.sw-hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  padding: 5rem 0 3rem;
+}
+.sw-hero__text {
+  flex: 1;
+}
+.sw-hero__desc {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 440px;
+  margin-bottom: 2.5rem;
+  font-family: var(--font-body);
+}
+.sw-hero__sotd {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  display: inline-block;
+}
+.sw-hero__images {
+  position: relative;
+  width: 45%;
+  height: 360px;
+}
+.sw-hero__img-1 {
+  position: absolute;
+  top: 0;
+  right: 10%;
+  width: 60%;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  z-index: 2;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.sw-hero__img-2 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 55%;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+  z-index: 1;
+  border: 1px solid rgba(255,255,255,0.08);
 }
 .sw-hero__title {
   font-family: var(--font-serif);
@@ -539,10 +634,34 @@ a.sw-link:hover, .sw-link:hover { color: var(--pink-100); }
 .MuiFormControlLabel-label { color: var(--text-primary) !important; font-family: var(--font-body) !important; }
 
 /* ---- Sliders ---- */
-.MuiSlider-root { color: var(--pink-500) !important; }
-.MuiSlider-thumb { background: var(--pink-400) !important; box-shadow: 0 0 0 4px rgba(236,72,153,0.15) !important; }
-.MuiSlider-rail { background: rgba(249,168,212,0.2) !important; }
-.MuiSlider-valueLabel { background: #1a0a12 !important; border: 1px solid var(--glass-border) !important; color: var(--pink-300) !important; font-family: var(--font-body) !important; }
+.MuiSlider-root {
+  color: var(--pink-500) !important;
+}
+.MuiSlider-thumb {
+  background: var(--pink-300) !important;
+  box-shadow: 0 0 10px rgba(156, 47, 90, 0.4) !important;
+}
+.MuiSlider-thumb:hover, .MuiSlider-thumb.Mui-focusVisible, .MuiSlider-thumb.Mui-active {
+  box-shadow: 0 0 0 8px rgba(156, 47, 90, 0.2) !important;
+}
+.MuiSlider-rail {
+  background: var(--glass-border) !important;
+  opacity: 1 !important;
+}
+.MuiSlider-track {
+  background: var(--pink-500) !important;
+  border: none !important;
+}
+.MuiSlider-valueLabel {
+  background: var(--bg-mid) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-body) !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  border-radius: 6px !important;
+  padding: 0.25rem 0.5rem !important;
+}
 
 /* ---- Text fields ---- */
 .MuiOutlinedInput-root {
@@ -610,6 +729,34 @@ a.sw-link:hover, .sw-link:hover { color: var(--pink-100); }
   margin-bottom: 2rem;
   backdrop-filter: blur(12px);
 }
+
+/* ---- Carousel ---- */
+.sw-carousel-container:hover .sw-carousel-btn {
+  opacity: 1;
+}
+.sw-carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(10,5,8,0.5);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s, background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+}
+.sw-carousel-btn:hover { background: rgba(236,72,153,0.8); border-color: transparent; }
+.sw-carousel-btn--prev { left: 1rem; }
+.sw-carousel-btn--next { right: 1rem; }
 
 /* ---- Animations ---- */
 @keyframes fadeInUp {
