@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 import SongCard from '../components/SongCard';
 import { formatDuration } from '../helpers/formatter';
+import fallbackSongs from '../fallback/search_songs.json';
 const config = require('../config.json');
 
 export default function SongsPage() {
@@ -31,6 +32,7 @@ export default function SongsPage() {
       .catch(() => {
         const cached = localStorage.getItem('sw_cache_search_default');
         if (cached) setData(JSON.parse(cached));
+        else setData(fallbackSongs.map(s => ({ id: s.song_id, ...s })));
       });
   }, []);
 
@@ -54,7 +56,10 @@ export default function SongsPage() {
       .catch(() => {
         const cached = localStorage.getItem(cacheKey);
         if (cached) setData(JSON.parse(cached));
-        else alert('Search failed and no offline backup available.');
+        else {
+          setData(fallbackSongs.map(s => ({ id: s.song_id, ...s })));
+          alert('Backend offline. Displaying standard backup tracks.');
+        }
       });
   };
 
@@ -89,7 +94,10 @@ export default function SongsPage() {
       .catch(() => {
         const cached = localStorage.getItem(cacheKey);
         if (cached) setData(JSON.parse(cached));
-        else alert('Search failed and no offline backup available.');
+        else {
+          setData(fallbackSongs.map(s => ({ id: s.song_id, ...s })));
+          alert('Backend offline. Displaying standard backup tracks.');
+        }
       });
   };
 

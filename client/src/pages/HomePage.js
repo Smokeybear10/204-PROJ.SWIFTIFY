@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom';
 
 import LazyTable from '../components/LazyTable';
 import SongCard from '../components/SongCard';
+import fallbackRandom from '../fallback/random.json';
+import fallbackAuthor from '../fallback/author.json';
 const config = require('../config.json');
 
 export default function HomePage() {
@@ -48,6 +50,7 @@ export default function HomePage() {
       .catch(() => {
         const cached = localStorage.getItem('sw_cache_random');
         if (cached) setSongOfTheDay(JSON.parse(cached));
+        else setSongOfTheDay(fallbackRandom);
       });
 
     fetch(`http://${config.server_host}:${config.server_port}/author/name`)
@@ -59,6 +62,7 @@ export default function HomePage() {
       .catch(() => {
         const cached = localStorage.getItem('sw_cache_author');
         if (cached) setAuthorName(cached);
+        else setAuthorName(fallbackAuthor.data || 'Thomas Ou');
       });
   }, []);
 

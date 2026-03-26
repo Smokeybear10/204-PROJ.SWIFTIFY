@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { TablePagination } from '@mui/material';
+import fallbackTopSongs from '../fallback/top_songs.json';
+import fallbackTopAlbums from '../fallback/top_albums.json';
 
 export default function LazyTable({ route, columns, defaultPageSize, rowsPerPageOptions }) {
   const [data, setData] = useState([]);
@@ -18,6 +20,10 @@ export default function LazyTable({ route, columns, defaultPageSize, rowsPerPage
       .catch(() => {
         const cached = localStorage.getItem(cacheKey);
         if (cached) setData(JSON.parse(cached));
+        else {
+          if (route.includes('top_songs')) setData(fallbackTopSongs);
+          else if (route.includes('top_albums')) setData(fallbackTopAlbums);
+        }
       });
   }, [route, page, pageSize]);
 

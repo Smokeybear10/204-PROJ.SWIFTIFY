@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import fallbackAlbums from '../fallback/albums.json';
 const config = require('../config.json');
 
 export default function AlbumsPage() {
@@ -15,6 +16,7 @@ export default function AlbumsPage() {
       .catch(() => {
         const cached = localStorage.getItem('sw_cache_albums');
         if (cached) setAlbums(JSON.parse(cached));
+        else setAlbums(fallbackAlbums);
       });
   }, []);
 
