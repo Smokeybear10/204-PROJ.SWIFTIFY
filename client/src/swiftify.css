@@ -382,7 +382,7 @@ a.sw-link:hover, .sw-link:hover { color: var(--pink-100); }
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
   display: flex;
   align-items: center;
   gap: 0.5rem;
