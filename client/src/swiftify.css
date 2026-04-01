@@ -334,6 +334,7 @@ body::after {
   color: var(--text-primary);
   border-bottom: 1px solid rgba(249, 168, 212, 0.06);
   transition: background 0.15s;
+  font-variant-numeric: tabular-nums;
 }
 
 .sw-table tbody tr:hover td {
