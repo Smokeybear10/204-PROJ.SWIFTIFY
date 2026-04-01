@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 import LazyTable from '../components/LazyTable';
 import SongCard from '../components/SongCard';
+import { formatPlays } from '../helpers/formatter';
 import fallbackRandom from '../fallback/random.json';
 import fallbackAuthor from '../fallback/author.json';
 const config = require('../config.json');
@@ -83,7 +84,7 @@ export default function HomePage() {
         <NavLink className="sw-link" to={`/albums/${row.album_id}`}>{row.album}</NavLink>
       ),
     },
-    { field: 'plays', headerName: 'Plays' },
+    { field: 'plays', headerName: 'Plays', renderCell: (row) => formatPlays(row.plays) },
   ];
 
   const albumColumns = [
@@ -94,7 +95,7 @@ export default function HomePage() {
         <NavLink className="sw-link" to={`/albums/${row.album_id}`}>{row.title}</NavLink>
       ),
     },
-    { field: 'plays', headerName: 'Plays' },
+    { field: 'plays', headerName: 'Plays', renderCell: (row) => formatPlays(row.plays) },
   ];
 
   return (

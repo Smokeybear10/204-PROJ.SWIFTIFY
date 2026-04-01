@@ -4,6 +4,10 @@ export function formatDuration(sec) {
   return date.toISOString().substring(14, 19);
 }
 
+export function formatPlays(num) {
+  return Number(num).toLocaleString();
+}
+
 export function formatReleaseDate(date) {
   const dateObj = new Date(Date.parse(date));
   return dateObj.toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric" });
