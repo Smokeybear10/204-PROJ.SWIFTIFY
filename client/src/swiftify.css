@@ -8,6 +8,7 @@
 
 /* ---- CSS Variables ---- */
 :root {
+  color-scheme: dark;
   --pink-100: #fce7f3;
   --pink-300: #e8a0bf;
   --pink-400: #d4739a;
