@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWIFTIFY — Variant A: Spotify Dark</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #121212;
+    --surface: #1a1a1a;
+    --surface-hover: #252525;
+    --green: #1DB954;
+    --green-dim: #1aa34a;
+    --text: #ffffff;
+    --text-muted: rgba(255,255,255,0.6);
+    --text-dim: rgba(255,255,255,0.4);
+    --border: rgba(255,255,255,0.08);
+  }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; }
+
+  /* Layout */
+  .app { display: grid; grid-template-columns: 240px 1fr; grid-template-rows: 1fr 72px; height: 100vh; }
+
+  /* Sidebar */
+  .sidebar {
+    background: #000;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    grid-row: 1 / 3;
+  }
+  .sidebar__brand {
+    font-weight: 900;
+    font-size: 1.3rem;
+    letter-spacing: 0.15em;
+    color: var(--green);
+  }
+  .sidebar__brand span { font-size: 0.6rem; display: block; color: var(--text-dim); letter-spacing: 0.05em; font-weight: 500; margin-top: 2px; }
+  .sidebar__nav { display: flex; flex-direction: column; gap: 0.25rem; }
+  .sidebar__link {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.65rem 0.75rem; border-radius: 6px;
+    color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.9rem;
+    transition: all 0.15s;
+  }
+  .sidebar__link:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+  .sidebar__link.active { color: var(--text); }
+  .sidebar__link svg { width: 20px; height: 20px; flex-shrink: 0; }
+  .sidebar__section-title {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-dim); padding: 0 0.75rem;
+  }
+  .sidebar__playlist {
+    display: flex; flex-direction: column; gap: 0.15rem; flex: 1; overflow-y: auto;
+  }
+  .sidebar__playlist a {
+    font-size: 0.85rem; color: var(--text-dim); text-decoration: none;
+    padding: 0.35rem 0.75rem; border-radius: 4px; transition: color 0.15s;
+  }
+  .sidebar__playlist a:hover { color: var(--text); }
+
+  /* Main */
+  .main {
+    background: linear-gradient(180deg, #2a1a1a 0%, var(--bg) 40%);
+    overflow-y: auto; padding: 1.5rem 2rem;
+  }
+
+  /* Top bar */
+  .topbar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 2rem; position: sticky; top: 0; z-index: 10;
+    padding: 0.5rem 0; background: transparent;
+  }
+  .topbar__nav { display: flex; gap: 0.5rem; }
+  .topbar__nav button {
+    width: 32px; height: 32px; border-radius: 50%; border: none;
+    background: rgba(0,0,0,0.5); color: var(--text); font-size: 1rem; cursor: pointer;
+  }
+  .topbar__search {
+    background: rgba(255,255,255,0.08); border: none; border-radius: 20px;
+    padding: 0.5rem 1rem; color: var(--text); font-size: 0.85rem; width: 280px;
+    font-family: inherit;
+  }
+  .topbar__search::placeholder { color: var(--text-dim); }
+
+  /* Hero */
+  .hero {
+    display: flex; align-items: flex-end; gap: 2rem;
+    padding: 2rem; margin-bottom: 2rem;
+    background: linear-gradient(transparent, rgba(0,0,0,0.3));
+    border-radius: 8px;
+  }
+  .hero__img {
+    width: 200px; height: 200px; border-radius: 8px;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem;
+  }
+  .hero__info { flex: 1; }
+  .hero__label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .hero__title { font-size: 3rem; font-weight: 900; margin: 0.25rem 0; letter-spacing: -0.02em; }
+  .hero__meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+  .hero__actions { display: flex; gap: 1rem; align-items: center; }
+  .hero__play {
+    width: 52px; height: 52px; border-radius: 50%; border: none;
+    background: var(--green); color: #000; font-size: 1.5rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.1s, background 0.15s;
+  }
+  .hero__play:hover { transform: scale(1.06); background: #1ed760; }
+
+  /* Section */
+  .section { margin-bottom: 2.5rem; }
+  .section__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+  .section__title { font-size: 1.4rem; font-weight: 700; }
+  .section__link { color: var(--text-dim); font-size: 0.8rem; font-weight: 700; text-decoration: none; letter-spacing: 0.05em; text-transform: uppercase; }
+  .section__link:hover { color: var(--text); }
+
+  /* Album grid */
+  .album-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.25rem; }
+  .album-card {
+    background: var(--surface); border-radius: 8px; padding: 1rem;
+    transition: background 0.2s; cursor: pointer;
+  }
+  .album-card:hover { background: var(--surface-hover); }
+  .album-card__img {
+    width: 100%; aspect-ratio: 1; border-radius: 6px; margin-bottom: 0.75rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  }
+  .album-card__img.pink { background: linear-gradient(135deg, #f9a8d4, #ec4899); }
+  .album-card__img.blue { background: linear-gradient(135deg, #93c5fd, #3b82f6); }
+  .album-card__img.purple { background: linear-gradient(135deg, #c4b5fd, #8b5cf6); }
+  .album-card__img.amber { background: linear-gradient(135deg, #fcd34d, #f59e0b); }
+  .album-card__img.emerald { background: linear-gradient(135deg, #6ee7b7, #10b981); }
+  .album-card__title { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .album-card__sub { color: var(--text-dim); font-size: 0.8rem; }
+
+  /* Song list */
+  .song-list { display: flex; flex-direction: column; }
+  .song-row {
+    display: grid; grid-template-columns: 2rem 1fr 1fr 80px;
+    align-items: center; padding: 0.6rem 0.75rem; border-radius: 4px;
+    font-size: 0.9rem; gap: 1rem; transition: background 0.15s;
+  }
+  .song-row:hover { background: rgba(255,255,255,0.06); }
+  .song-row__num { color: var(--text-dim); text-align: right; font-variant-numeric: tabular-nums; }
+  .song-row__title { font-weight: 500; }
+  .song-row__album { color: var(--text-dim); }
+  .song-row__dur { color: var(--text-dim); text-align: right; font-variant-numeric: tabular-nums; }
+  .song-row--header { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 0.25rem; }
+
+  /* Now Playing Bar */
+  .nowplaying {
+    background: #181818; border-top: 1px solid var(--border);
+    display: grid; grid-template-columns: 240px 1fr 200px;
+    align-items: center; padding: 0 1rem;
+  }
+  .nowplaying__song { display: flex; align-items: center; gap: 0.75rem; }
+  .nowplaying__art {
+    width: 48px; height: 48px; border-radius: 4px;
+    background: linear-gradient(135deg, #f9a8d4, #ec4899);
+  }
+  .nowplaying__info { }
+  .nowplaying__title { font-size: 0.85rem; font-weight: 500; }
+  .nowplaying__artist { font-size: 0.75rem; color: var(--text-dim); }
+  .nowplaying__controls { display: flex; align-items: center; justify-content: center; gap: 1.5rem; flex-direction: column; }
+  .nowplaying__buttons { display: flex; gap: 1.25rem; align-items: center; }
+  .nowplaying__buttons button { background: none; border: none; color: var(--text-muted); font-size: 1rem; cursor: pointer; }
+  .nowplaying__buttons button.play { color: var(--text); font-size: 1.5rem; width: 32px; height: 32px; background: var(--text); border-radius: 50%; color: #000; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+  .nowplaying__progress { width: 100%; max-width: 500px; display: flex; align-items: center; gap: 0.5rem; }
+  .nowplaying__bar { flex: 1; height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; position: relative; }
+  .nowplaying__bar-fill { width: 35%; height: 100%; background: var(--green); border-radius: 2px; }
+  .nowplaying__time { font-size: 0.7rem; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+  .nowplaying__volume { display: flex; align-items: center; justify-content: flex-end; gap: 0.5rem; }
+  .nowplaying__vol-bar { width: 80px; height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; }
+  .nowplaying__vol-fill { width: 65%; height: 100%; background: var(--text); border-radius: 2px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div>
+      <div class="sidebar__brand">SWIFTIFY<span>by Thomas Ou</span></div>
+    </div>
+    <div class="sidebar__nav">
+      <a href="#" class="sidebar__link active">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        Home
+      </a>
+      <a href="#" class="sidebar__link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+        Albums
+      </a>
+      <a href="#" class="sidebar__link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        Songs
+      </a>
+    </div>
+    <div class="sidebar__section-title">Playlists</div>
+    <div class="sidebar__playlist">
+      <a href="#">Taylor's Vault Tracks</a>
+      <a href="#">Eras Tour Setlist</a>
+      <a href="#">Sad Girl Autumn</a>
+      <a href="#">Upbeat Bangers</a>
+      <a href="#">Acoustic Favorites</a>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar__nav">
+        <button>←</button>
+        <button>→</button>
+      </div>
+      <input type="text" class="topbar__search" placeholder="Search songs, albums...">
+    </div>
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero__img">🌙</div>
+      <div class="hero__info">
+        <div class="hero__label">Featured Album</div>
+        <h1 class="hero__title">Midnights</h1>
+        <p class="hero__meta">Taylor Swift · 2022 · 20 songs, 1 hr 4 min</p>
+        <div class="hero__actions">
+          <button class="hero__play">▶</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Albums -->
+    <div class="section">
+      <div class="section__header">
+        <h2 class="section__title">Popular Albums</h2>
+        <a href="#" class="section__link">Show all</a>
+      </div>
+      <div class="album-grid">
+        <div class="album-card"><div class="album-card__img pink"></div><div class="album-card__title">Lover</div><div class="album-card__sub">2019</div></div>
+        <div class="album-card"><div class="album-card__img blue"></div><div class="album-card__title">1989 (Deluxe)</div><div class="album-card__sub">2014</div></div>
+        <div class="album-card"><div class="album-card__img purple"></div><div class="album-card__title">reputation</div><div class="album-card__sub">2017</div></div>
+        <div class="album-card"><div class="album-card__img amber"></div><div class="album-card__title">folklore</div><div class="album-card__sub">2020</div></div>
+        <div class="album-card"><div class="album-card__img emerald"></div><div class="album-card__title">evermore</div><div class="album-card__sub">2020</div></div>
+      </div>
+    </div>
+
+    <!-- Top Songs -->
+    <div class="section">
+      <div class="section__header">
+        <h2 class="section__title">Top Songs</h2>
+        <a href="#" class="section__link">Show all</a>
+      </div>
+      <div class="song-list">
+        <div class="song-row song-row--header"><span>#</span><span>Title</span><span>Album</span><span style="text-align:right">Duration</span></div>
+        <div class="song-row"><span class="song-row__num">1</span><span class="song-row__title">Blank Space</span><span class="song-row__album">1989 (Deluxe)</span><span class="song-row__dur">3:51</span></div>
+        <div class="song-row"><span class="song-row__num">2</span><span class="song-row__title">Shake It Off</span><span class="song-row__album">1989 (Deluxe)</span><span class="song-row__dur">3:39</span></div>
+        <div class="song-row"><span class="song-row__num">3</span><span class="song-row__title">Anti-Hero</span><span class="song-row__album">Midnights</span><span class="song-row__dur">3:21</span></div>
+        <div class="song-row"><span class="song-row__num">4</span><span class="song-row__title">Love Story</span><span class="song-row__album">Fearless</span><span class="song-row__dur">3:55</span></div>
+        <div class="song-row"><span class="song-row__num">5</span><span class="song-row__title">Cruel Summer</span><span class="song-row__album">Lover</span><span class="song-row__dur">2:58</span></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Now Playing -->
+  <div class="nowplaying">
+    <div class="nowplaying__song">
+      <div class="nowplaying__art"></div>
+      <div class="nowplaying__info">
+        <div class="nowplaying__title">Anti-Hero</div>
+        <div class="nowplaying__artist">Taylor Swift</div>
+      </div>
+    </div>
+    <div class="nowplaying__controls">
+      <div class="nowplaying__buttons">
+        <button>⏮</button>
+        <button class="play">▶</button>
+        <button>⏭</button>
+      </div>
+      <div class="nowplaying__progress">
+        <span class="nowplaying__time">1:12</span>
+        <div class="nowplaying__bar"><div class="nowplaying__bar-fill"></div></div>
+        <span class="nowplaying__time">3:21</span>
+      </div>
+    </div>
+    <div class="nowplaying__volume">
+      <span style="font-size:0.8rem;color:rgba(255,255,255,0.6)">🔊</span>
+      <div class="nowplaying__vol-bar"><div class="nowplaying__vol-fill"></div></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

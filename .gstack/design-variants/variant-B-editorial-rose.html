@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWIFTIFY — Variant B: Editorial Rose</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0d0a0b;
+    --surface: #1a1517;
+    --surface-hover: #241e21;
+    --rose: #e8456b;
+    --rose-dim: #c73a5a;
+    --gold: #d4a953;
+    --text: #f5f0ec;
+    --text-muted: rgba(245,240,236,0.6);
+    --text-dim: rgba(245,240,236,0.35);
+    --border: rgba(245,240,236,0.08);
+  }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Inter', sans-serif; line-height: 1.5;
+  }
+  h1, h2, h3, .editorial { font-family: 'Playfair Display', Georgia, serif; }
+
+  /* Nav */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 3rem;
+    background: rgba(13,10,11,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav__brand {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900; font-size: 1.5rem;
+    letter-spacing: 0.08em; color: var(--text);
+  }
+  .nav__brand em { font-style: italic; color: var(--rose); }
+  .nav__links { display: flex; gap: 2.5rem; }
+  .nav__links a {
+    color: var(--text-muted); text-decoration: none;
+    font-size: 0.8rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    transition: color 0.2s; position: relative;
+  }
+  .nav__links a:hover, .nav__links a.active { color: var(--text); }
+  .nav__links a.active::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+    height: 1px; background: var(--rose);
+  }
+
+  /* Hero — full bleed editorial */
+  .hero {
+    min-height: 100vh; display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative; overflow: hidden;
+  }
+  .hero__left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 8rem 4rem 4rem 4rem; position: relative; z-index: 2;
+  }
+  .hero__overline {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--rose); margin-bottom: 1.5rem;
+  }
+  .hero__title {
+    font-size: 5.5rem; font-weight: 900; line-height: 0.95;
+    letter-spacing: -0.03em; margin-bottom: 1.5rem;
+  }
+  .hero__title em { font-style: italic; color: var(--rose); }
+  .hero__desc {
+    font-size: 1.1rem; color: var(--text-muted); max-width: 420px;
+    margin-bottom: 2.5rem; line-height: 1.7;
+  }
+  .hero__cta {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    padding: 1rem 2rem; background: var(--rose);
+    color: #fff; font-weight: 600; font-size: 0.85rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    border: none; cursor: pointer; transition: background 0.2s;
+  }
+  .hero__cta:hover { background: var(--rose-dim); }
+  .hero__right {
+    position: relative;
+    background: linear-gradient(135deg, #3a1a2a, #1a0a15);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero__artwork {
+    width: 380px; height: 380px; border-radius: 0;
+    background: linear-gradient(160deg, #e8456b 0%, #d4a953 50%, #8b5cf6 100%);
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 120px rgba(232,69,107,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 6rem;
+  }
+  .hero__sotd {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-left: 2px solid var(--rose);
+    margin-top: 0.5rem;
+  }
+  .hero__sotd-label {
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-dim);
+  }
+  .hero__sotd-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-style: italic; color: var(--text);
+    cursor: pointer;
+  }
+  .hero__sotd-title:hover { color: var(--rose); }
+
+  /* Content wrapper */
+  .content { max-width: 1200px; margin: 0 auto; padding: 0 3rem; }
+
+  /* Section */
+  .section { padding: 5rem 0; border-top: 1px solid var(--border); }
+  .section__header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 3rem;
+  }
+  .section__title {
+    font-size: 3rem; font-weight: 900; letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .section__title em { font-style: italic; color: var(--rose); }
+  .section__link {
+    color: var(--text-dim); font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    text-decoration: none; border-bottom: 1px solid var(--text-dim);
+    padding-bottom: 2px; transition: color 0.2s, border-color 0.2s;
+  }
+  .section__link:hover { color: var(--rose); border-color: var(--rose); }
+
+  /* Album grid — editorial asymmetric */
+  .album-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+  }
+  .album-card {
+    position: relative; overflow: hidden; cursor: pointer;
+    background: var(--surface);
+  }
+  .album-card:nth-child(1) { grid-column: span 5; }
+  .album-card:nth-child(2) { grid-column: span 7; }
+  .album-card:nth-child(3) { grid-column: span 4; }
+  .album-card:nth-child(4) { grid-column: span 4; }
+  .album-card:nth-child(5) { grid-column: span 4; }
+  .album-card__img {
+    width: 100%; aspect-ratio: 4/3;
+  }
+  .album-card__img.pink { background: linear-gradient(160deg, #f472b6, #be185d); }
+  .album-card__img.blue { background: linear-gradient(160deg, #60a5fa, #1d4ed8); }
+  .album-card__img.purple { background: linear-gradient(160deg, #a78bfa, #6d28d9); }
+  .album-card__img.amber { background: linear-gradient(160deg, #fbbf24, #b45309); }
+  .album-card__img.emerald { background: linear-gradient(160deg, #34d399, #065f46); }
+  .album-card__overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 1.5rem;
+    background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  }
+  .album-card__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700; margin-bottom: 0.25rem;
+  }
+  .album-card__sub { color: var(--text-muted); font-size: 0.8rem; }
+  .album-card:hover .album-card__overlay { background: linear-gradient(transparent, rgba(232,69,107,0.6)); }
+
+  /* Song table — editorial */
+  .song-table { width: 100%; border-collapse: collapse; }
+  .song-table thead th {
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-dim);
+    text-align: left; padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .song-table thead th:last-child { text-align: right; }
+  .song-table tbody tr { transition: background 0.15s; cursor: pointer; }
+  .song-table tbody tr:hover { background: var(--surface); }
+  .song-table td {
+    padding: 1rem; font-size: 0.9rem;
+    border-bottom: 1px solid rgba(245,240,236,0.04);
+    font-variant-numeric: tabular-nums;
+  }
+  .song-table td:first-child { color: var(--text-dim); width: 3rem; }
+  .song-table td:nth-child(2) { font-weight: 500; }
+  .song-table td:nth-child(3) { color: var(--text-muted); }
+  .song-table td:last-child { text-align: right; color: var(--text-dim); }
+  .song-table .song-plays { font-variant-numeric: tabular-nums; }
+
+  /* Divider quote */
+  .pullquote {
+    padding: 5rem 3rem; text-align: center;
+    border-top: 1px solid var(--border);
+  }
+  .pullquote__text {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-style: italic;
+    line-height: 1.4; max-width: 700px;
+    margin: 0 auto 1rem; color: var(--text);
+  }
+  .pullquote__attr {
+    font-size: 0.75rem; color: var(--text-dim);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  /* Footer */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem; text-align: center;
+  }
+  .footer__brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;
+  }
+  .footer__credit { font-size: 0.75rem; color: var(--text-dim); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero__left { padding: 7rem 2rem 3rem; }
+    .hero__title { font-size: 3.5rem; }
+    .hero__right { height: 50vh; }
+    .hero__artwork { width: 260px; height: 260px; font-size: 4rem; }
+    .nav { padding: 1rem 1.5rem; }
+    .content { padding: 0 1.5rem; }
+    .album-grid { grid-template-columns: 1fr 1fr; }
+    .album-card:nth-child(1),
+    .album-card:nth-child(2),
+    .album-card:nth-child(3),
+    .album-card:nth-child(4),
+    .album-card:nth-child(5) { grid-column: span 1; }
+    .section__title { font-size: 2rem; }
+    .section__header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav__brand">SWIFT<em>IFY</em></div>
+    <div class="nav__links">
+      <a href="#" class="active">Home</a>
+      <a href="#">Albums</a>
+      <a href="#">Songs</a>
+      <a href="#">Search</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__left">
+      <div class="hero__overline">Taylor Swift Discography Explorer</div>
+      <h1 class="hero__title">Every <em>era.</em><br>Every <em>note.</em></h1>
+      <p class="hero__desc">
+        Explore the complete Taylor Swift catalog. Track acoustics, discover hidden favorites, and generate surprise playlists across every era.
+      </p>
+      <button class="hero__cta">Explore the Collection →</button>
+      <div class="hero__sotd">
+        <div>
+          <div class="hero__sotd-label">Song of the Day</div>
+          <div class="hero__sotd-title">Anti-Hero</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero__right">
+      <div class="hero__artwork">🌙</div>
+    </div>
+  </section>
+
+  <!-- Albums -->
+  <div class="content">
+    <section class="section">
+      <div class="section__header">
+        <h2 class="section__title">Top <em>Albums</em></h2>
+        <a href="#" class="section__link">View All Albums</a>
+      </div>
+      <div class="album-grid">
+        <div class="album-card">
+          <div class="album-card__img pink"></div>
+          <div class="album-card__overlay">
+            <div class="album-card__title">Lover</div>
+            <div class="album-card__sub">2019 · 18 songs</div>
+          </div>
+        </div>
+        <div class="album-card">
+          <div class="album-card__img blue"></div>
+          <div class="album-card__overlay">
+            <div class="album-card__title">1989 (Taylor's Version)</div>
+            <div class="album-card__sub">2014 · 21 songs</div>
+          </div>
+        </div>
+        <div class="album-card">
+          <div class="album-card__img purple"></div>
+          <div class="album-card__overlay">
+            <div class="album-card__title">reputation</div>
+            <div class="album-card__sub">2017 · 15 songs</div>
+          </div>
+        </div>
+        <div class="album-card">
+          <div class="album-card__img amber"></div>
+          <div class="album-card__overlay">
+            <div class="album-card__title">folklore</div>
+            <div class="album-card__sub">2020 · 17 songs</div>
+          </div>
+        </div>
+        <div class="album-card">
+          <div class="album-card__img emerald"></div>
+          <div class="album-card__overlay">
+            <div class="album-card__title">evermore</div>
+            <div class="album-card__sub">2020 · 17 songs</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pullquote -->
+    <div class="pullquote">
+      <p class="pullquote__text">"People haven't always been there for me, but music always has."</p>
+      <p class="pullquote__attr">— Taylor Swift</p>
+    </div>
+
+    <!-- Top Songs -->
+    <section class="section">
+      <div class="section__header">
+        <h2 class="section__title">Top <em>Songs</em></h2>
+        <a href="#" class="section__link">View All Songs</a>
+      </div>
+      <table class="song-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Album</th>
+            <th>Plays</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>01</td><td>Blank Space</td><td>1989 (Deluxe)</td><td class="song-plays">1,857,231,042</td></tr>
+          <tr><td>02</td><td>Shake It Off</td><td>1989 (Deluxe)</td><td class="song-plays">1,621,904,418</td></tr>
+          <tr><td>03</td><td>Anti-Hero</td><td>Midnights</td><td class="song-plays">1,423,882,615</td></tr>
+          <tr><td>04</td><td>Love Story</td><td>Fearless</td><td class="song-plays">1,291,045,003</td></tr>
+          <tr><td>05</td><td>Cruel Summer</td><td>Lover</td><td class="song-plays">1,187,332,451</td></tr>
+          <tr><td>06</td><td>Style</td><td>1989 (Deluxe)</td><td class="song-plays">1,076,219,881</td></tr>
+          <tr><td>07</td><td>cardigan</td><td>folklore</td><td class="song-plays">892,445,021</td></tr>
+          <tr><td>08</td><td>Delicate</td><td>reputation</td><td class="song-plays">845,120,394</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__brand">SWIFTIFY</div>
+    <div class="footer__credit">Built by Thomas Ou</div>
+  </footer>
+
+</body>
+</html>

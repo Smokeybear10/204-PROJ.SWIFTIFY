@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWIFTIFY — Variant C: Glass Luxe</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0f0f13;
+    --glass: rgba(255,255,255,0.04);
+    --glass-hover: rgba(255,255,255,0.08);
+    --glass-border: rgba(255,255,255,0.08);
+    --glass-strong: rgba(255,255,255,0.06);
+    --rose: #f472b6;
+    --rose-soft: rgba(244,114,182,0.15);
+    --violet: #a78bfa;
+    --violet-soft: rgba(167,139,250,0.15);
+    --text: #f8f8fc;
+    --text-muted: rgba(248,248,252,0.55);
+    --text-dim: rgba(248,248,252,0.3);
+    --border: rgba(255,255,255,0.06);
+    --glow-rose: rgba(244,114,182,0.2);
+    --glow-violet: rgba(167,139,250,0.2);
+  }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 20% 10%, rgba(244,114,182,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(167,139,250,0.05) 0%, transparent 60%);
+  }
+
+  /* Glass mixin */
+  .glass {
+    background: var(--glass);
+    backdrop-filter: blur(24px) saturate(1.2);
+    -webkit-backdrop-filter: blur(24px) saturate(1.2);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+  }
+
+  /* Nav */
+  .nav {
+    position: fixed; top: 1rem; left: 50%; transform: translateX(-50%);
+    z-index: 100; display: flex; align-items: center;
+    gap: 2rem; padding: 0.75rem 2rem;
+    background: rgba(15,15,19,0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+  }
+  .nav__brand {
+    font-weight: 700; font-size: 1rem;
+    letter-spacing: 0.1em;
+    background: linear-gradient(135deg, var(--rose), var(--violet));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .nav__links { display: flex; gap: 0.25rem; }
+  .nav__links a {
+    color: var(--text-muted); text-decoration: none;
+    font-size: 0.8rem; font-weight: 500;
+    padding: 0.5rem 1rem; border-radius: 999px;
+    transition: all 0.2s;
+  }
+  .nav__links a:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+  .nav__links a.active {
+    color: var(--text);
+    background: rgba(255,255,255,0.08);
+  }
+
+  /* Layout */
+  .page { padding: 6rem 2rem 3rem; max-width: 1200px; margin: 0 auto; }
+
+  /* Hero */
+  .hero {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; align-items: center;
+    padding: 3rem 0; margin-bottom: 3rem;
+  }
+  .hero__text { }
+  .hero__overline {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--rose);
+    margin-bottom: 1rem;
+  }
+  .hero__title {
+    font-size: 3.5rem; font-weight: 700; line-height: 1.1;
+    letter-spacing: -0.03em; margin-bottom: 1.25rem;
+  }
+  .hero__title span {
+    background: linear-gradient(135deg, var(--rose), var(--violet));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero__desc {
+    font-size: 1rem; color: var(--text-muted); line-height: 1.7;
+    max-width: 440px; margin-bottom: 2rem;
+  }
+  .hero__actions { display: flex; gap: 1rem; align-items: center; }
+  .hero__btn {
+    padding: 0.85rem 2rem; border: none; border-radius: 999px;
+    font-family: inherit; font-weight: 600; font-size: 0.85rem;
+    cursor: pointer; transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .hero__btn--primary {
+    background: linear-gradient(135deg, var(--rose), var(--violet));
+    color: #fff;
+    box-shadow: 0 4px 24px var(--glow-rose), 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .hero__btn--primary:hover { transform: translateY(-1px); box-shadow: 0 8px 32px var(--glow-rose); }
+  .hero__btn--secondary {
+    background: var(--glass);
+    color: var(--text);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+  }
+  .hero__btn--secondary:hover { background: var(--glass-hover); }
+
+  .hero__visual { display: flex; justify-content: center; position: relative; }
+  .hero__artwork {
+    width: 340px; height: 340px; border-radius: 24px;
+    background: linear-gradient(160deg, rgba(244,114,182,0.3), rgba(167,139,250,0.3));
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(40px);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 5rem;
+    box-shadow:
+      0 30px 60px rgba(0,0,0,0.4),
+      0 0 100px rgba(244,114,182,0.08),
+      inset 0 1px 0 rgba(255,255,255,0.1);
+    position: relative;
+  }
+  .hero__artwork::after {
+    content: '';
+    position: absolute; inset: -1px; border-radius: 25px;
+    background: linear-gradient(135deg, rgba(244,114,182,0.3), transparent, rgba(167,139,250,0.3));
+    z-index: -1; filter: blur(1px);
+  }
+  .hero__sotd {
+    margin-top: 2rem; padding: 1rem 1.5rem;
+    border-radius: 16px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    display: inline-flex; align-items: center; gap: 1rem;
+  }
+  .hero__sotd-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--rose-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+  }
+  .hero__sotd-label { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
+  .hero__sotd-title { font-weight: 600; font-size: 0.95rem; cursor: pointer; }
+  .hero__sotd-title:hover { color: var(--rose); }
+
+  /* Section */
+  .section { margin-bottom: 3.5rem; }
+  .section__header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  .section__title { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.01em; }
+  .section__link {
+    color: var(--text-dim); font-size: 0.75rem; font-weight: 600;
+    text-decoration: none; padding: 0.4rem 1rem;
+    border-radius: 999px; border: 1px solid var(--glass-border);
+    transition: all 0.2s;
+  }
+  .section__link:hover { color: var(--text); background: var(--glass); }
+
+  /* Album grid — glass cards */
+  .album-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.25rem;
+  }
+  .album-card {
+    border-radius: 20px; padding: 1rem; cursor: pointer;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    transition: all 0.25s;
+  }
+  .album-card:hover {
+    background: var(--glass-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 60px rgba(244,114,182,0.05);
+  }
+  .album-card__img {
+    width: 100%; aspect-ratio: 1; border-radius: 14px;
+    margin-bottom: 0.85rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .album-card__img.pink { background: linear-gradient(135deg, rgba(244,114,182,0.7), rgba(190,24,93,0.8)); }
+  .album-card__img.blue { background: linear-gradient(135deg, rgba(96,165,250,0.7), rgba(29,78,216,0.8)); }
+  .album-card__img.purple { background: linear-gradient(135deg, rgba(167,139,250,0.7), rgba(109,40,217,0.8)); }
+  .album-card__img.amber { background: linear-gradient(135deg, rgba(251,191,36,0.7), rgba(180,83,9,0.8)); }
+  .album-card__img.emerald { background: linear-gradient(135deg, rgba(52,211,153,0.7), rgba(6,95,70,0.8)); }
+  .album-card__title { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.2rem; }
+  .album-card__sub { font-size: 0.8rem; color: var(--text-dim); }
+
+  /* Song list — glass rows */
+  .song-list {
+    border-radius: 20px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    overflow: hidden;
+  }
+  .song-row {
+    display: grid;
+    grid-template-columns: 3rem 1fr 1fr 100px;
+    align-items: center; gap: 1rem;
+    padding: 0.85rem 1.5rem;
+    transition: background 0.15s; cursor: pointer;
+    font-size: 0.9rem;
+  }
+  .song-row:hover { background: rgba(255,255,255,0.04); }
+  .song-row + .song-row { border-top: 1px solid rgba(255,255,255,0.03); }
+  .song-row--header {
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-dim);
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+    cursor: default;
+  }
+  .song-row--header:hover { background: none; }
+  .song-row__num { color: var(--text-dim); text-align: center; font-variant-numeric: tabular-nums; }
+  .song-row__title { font-weight: 500; }
+  .song-row__album { color: var(--text-muted); }
+  .song-row__plays { color: var(--text-dim); text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* Stats row */
+  .stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem; margin-bottom: 3.5rem;
+  }
+  .stat {
+    padding: 1.5rem;
+    border-radius: 20px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    text-align: center;
+  }
+  .stat__num {
+    font-size: 2rem; font-weight: 700; letter-spacing: -0.02em;
+    margin-bottom: 0.25rem;
+    background: linear-gradient(135deg, var(--rose), var(--violet));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat__label { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; }
+
+  /* Footer */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 0; text-align: center;
+    margin-top: 2rem;
+  }
+  .footer__brand {
+    font-weight: 700; font-size: 0.9rem; letter-spacing: 0.1em;
+    background: linear-gradient(135deg, var(--rose), var(--violet));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.35rem;
+  }
+  .footer__credit { font-size: 0.75rem; color: var(--text-dim); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; text-align: center; }
+    .hero__text { order: 2; }
+    .hero__visual { order: 1; }
+    .hero__desc { margin-left: auto; margin-right: auto; }
+    .hero__title { font-size: 2.5rem; }
+    .hero__artwork { width: 260px; height: 260px; font-size: 3.5rem; }
+    .hero__actions { justify-content: center; }
+    .hero__sotd { margin-left: auto; margin-right: auto; }
+    .album-grid { grid-template-columns: repeat(2, 1fr); }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .nav { padding: 0.6rem 1.25rem; gap: 1rem; }
+    .nav__links a { font-size: 0.75rem; padding: 0.4rem 0.75rem; }
+    .song-row { grid-template-columns: 2.5rem 1fr 80px; }
+    .song-row__album { display: none; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav__brand">SWIFTIFY</div>
+    <div class="nav__links">
+      <a href="#" class="active">Home</a>
+      <a href="#">Albums</a>
+      <a href="#">Songs</a>
+      <a href="#">Search</a>
+    </div>
+  </nav>
+
+  <div class="page">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero__text">
+        <div class="hero__overline">Taylor Swift Discography</div>
+        <h1 class="hero__title">Welcome to <span>Swiftify</span></h1>
+        <p class="hero__desc">
+          Explore the complete catalog. Track acoustics, discover hidden favorites, and generate surprise playlists across every era.
+        </p>
+        <div class="hero__actions">
+          <button class="hero__btn hero__btn--primary">Start Exploring</button>
+          <button class="hero__btn hero__btn--secondary">Random Song</button>
+        </div>
+        <div class="hero__sotd">
+          <div class="hero__sotd-icon">✦</div>
+          <div>
+            <div class="hero__sotd-label">Song of the Day</div>
+            <div class="hero__sotd-title">Anti-Hero</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <div class="hero__artwork">🌙</div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat">
+        <div class="stat__num">232</div>
+        <div class="stat__label">Songs</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">14</div>
+        <div class="stat__label">Albums</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">17</div>
+        <div class="stat__label">Years</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">10B+</div>
+        <div class="stat__label">Streams</div>
+      </div>
+    </div>
+
+    <!-- Albums -->
+    <section class="section">
+      <div class="section__header">
+        <h2 class="section__title">Top Albums</h2>
+        <a href="#" class="section__link">View All</a>
+      </div>
+      <div class="album-grid">
+        <div class="album-card">
+          <div class="album-card__img pink"></div>
+          <div class="album-card__title">Lover</div>
+          <div class="album-card__sub">2019</div>
+        </div>
+        <div class="album-card">
+          <div class="album-card__img blue"></div>
+          <div class="album-card__title">1989 (TV)</div>
+          <div class="album-card__sub">2014</div>
+        </div>
+        <div class="album-card">
+          <div class="album-card__img purple"></div>
+          <div class="album-card__title">reputation</div>
+          <div class="album-card__sub">2017</div>
+        </div>
+        <div class="album-card">
+          <div class="album-card__img amber"></div>
+          <div class="album-card__title">folklore</div>
+          <div class="album-card__sub">2020</div>
+        </div>
+        <div class="album-card">
+          <div class="album-card__img emerald"></div>
+          <div class="album-card__title">evermore</div>
+          <div class="album-card__sub">2020</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Songs -->
+    <section class="section">
+      <div class="section__header">
+        <h2 class="section__title">Top Songs</h2>
+        <a href="#" class="section__link">View All</a>
+      </div>
+      <div class="song-list">
+        <div class="song-row song-row--header">
+          <span>#</span><span>Title</span><span class="song-row__album">Album</span><span style="text-align:right">Plays</span>
+        </div>
+        <div class="song-row">
+          <span class="song-row__num">1</span>
+          <span class="song-row__title">Blank Space</span>
+          <span class="song-row__album">1989 (Deluxe)</span>
+          <span class="song-row__plays">1,857,231,042</span>
+        </div>
+        <div class="song-row">
+          <span class="song-row__num">2</span>
+          <span class="song-row__title">Shake It Off</span>
+          <span class="song-row__album">1989 (Deluxe)</span>
+          <span class="song-row__plays">1,621,904,418</span>
+        </div>
+        <div class="song-row">
+          <span class="song-row__num">3</span>
+          <span class="song-row__title">Anti-Hero</span>
+          <span class="song-row__album">Midnights</span>
+          <span class="song-row__plays">1,423,882,615</span>
+        </div>
+        <div class="song-row">
+          <span class="song-row__num">4</span>
+          <span class="song-row__title">Love Story</span>
+          <span class="song-row__album">Fearless</span>
+          <span class="song-row__plays">1,291,045,003</span>
+        </div>
+        <div class="song-row">
+          <span class="song-row__num">5</span>
+          <span class="song-row__title">Cruel Summer</span>
+          <span class="song-row__album">Lover</span>
+          <span class="song-row__plays">1,187,332,451</span>
+        </div>
+        <div class="song-row">
+          <span class="song-row__num">6</span>
+          <span class="song-row__title">Style</span>
+          <span class="song-row__album">1989 (Deluxe)</span>
+          <span class="song-row__plays">1,076,219,881</span>
+        </div>
+        <div class="song-row">
+          <span class="song-row__num">7</span>
+          <span class="song-row__title">cardigan</span>
+          <span class="song-row__album">folklore</span>
+          <span class="song-row__plays">892,445,021</span>
+        </div>
+        <div class="song-row">
+          <span class="song-row__num">8</span>
+          <span class="song-row__title">Delicate</span>
+          <span class="song-row__album">reputation</span>
+          <span class="song-row__plays">845,120,394</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer__brand">SWIFTIFY</div>
+      <div class="footer__credit">Built by Thomas Ou</div>
+    </footer>
+
+  </div>
+
+</body>
+</html>

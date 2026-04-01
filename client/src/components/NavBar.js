@@ -5,9 +5,8 @@ export default function NavBar() {
     <nav className="sw-navbar">
       <div className="sw-navbar__left">
         <NavLink to="/" className="sw-navbar__brand-container" style={{ textDecoration: 'none' }}>
-          <div className="sw-navbar__brand" style={{ fontSize: '1.4rem', marginRight: '0.4rem', marginTop: '0.1rem' }}>✦</div>
           <div className="sw-navbar__brand-text">
-            <div className="sw-navbar__brand">SWIFTIFY</div>
+            <div className="sw-navbar__brand">SWIFT<em>IFY</em></div>
             <div className="sw-navbar__brand-subtitle">by Thomas Ou</div>
           </div>
         </NavLink>
