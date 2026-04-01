@@ -799,6 +799,12 @@ a.sw-link:hover, .sw-link:hover { color: var(--pink-100); }
 .sw-page > *:nth-child(4) { animation-delay: 0.15s; }
 .sw-page > *:nth-child(5) { animation-delay: 0.20s; }
 
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none; }
+  .sw-page > * { animation: none; }
+  .sw-carousel-btn { transition: none; }
+}
+
 /* ---- Carousel Base Styles ---- */
 .sw-carousel-container {
   position: relative;
