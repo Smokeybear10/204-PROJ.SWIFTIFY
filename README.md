@@ -2,14 +2,17 @@
 
 <img src="client/public/img/demo.gif" alt="Swiftify Demo UI" width="100%" style="border-radius: 8px; margin: 10px 0;" />
 
-A full-stack web application for exploring Taylor Swift's discography, built for CIS 5500 at Penn. Browse albums, search songs with advanced filters, and discover random tracks — all wrapped in a dark, editorial rose UI.
+A full-stack Taylor Swift discography explorer built for CIS 5500 at Penn. Cinematic dark UI with GSAP scroll animations, IP-based location detection, and deep song analytics across every era.
 
 ## Tech Stack
 
-- **Frontend:** React 18, React Router, Material UI (MUI), Recharts
-- **Backend:** Express.js with CORS
-- **Database:** PostgreSQL (hosted on AWS RDS)
-- **Deployment:** Railway (server), Vercel (client)
+| Layer | Tools |
+|-------|-------|
+| Frontend | React 18, React Router, GSAP + ScrollTrigger, Recharts |
+| UI | Material UI (MUI), custom CSS (Cormorant · Syne · Space Mono) |
+| Backend | Express.js, CORS |
+| Database | PostgreSQL on AWS RDS |
+| Deployment | Railway (server), Vercel (client) |
 
 ## Features
 
@@ -68,14 +71,14 @@ cd client && npm install
 Start both the server and client in separate terminals:
 
 ```bash
-# Terminal 1 — Start the backend (runs on port 8080)
+# Terminal 1 — Start the backend (runs on port 3201)
 cd server && node server.js
 
-# Terminal 2 — Start the frontend (runs on port 3000)
+# Terminal 2 — Start the frontend (runs on port 2204)
 cd client && npm start
 ```
 
-The app will be available at `http://localhost:3000`. The client makes API calls to `http://localhost:8080` by default (configured in `client/src/config.json`).
+The app will be available at `http://localhost:2204`. The client makes API calls to `http://localhost:3201` by default (configured in `client/src/config.json`).
 
 ## Authors
 

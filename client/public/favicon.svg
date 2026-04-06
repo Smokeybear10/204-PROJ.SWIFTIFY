@@ -1,3 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <path d="M50 0 C50 40 60 50 100 50 C60 50 50 60 50 100 C50 60 40 50 0 50 C40 50 50 40 50 0 Z" fill="#f9a8d4" />
+  <defs>
+    <linearGradient id="sg" x1="10%" y1="10%" x2="90%" y2="90%">
+      <stop offset="0%" stop-color="#f06090"/>
+      <stop offset="55%" stop-color="#e8456b"/>
+      <stop offset="100%" stop-color="#d4a953"/>
+    </linearGradient>
+    <radialGradient id="bg" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#1c0d22"/>
+      <stop offset="100%" stop-color="#060309"/>
+    </radialGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <circle cx="50" cy="50" r="50" fill="url(#bg)"/>
+  <path d="M50,8 C51,36 64,49 92,50 C64,51 51,64 50,92 C49,64 36,51 8,50 C36,49 49,36 50,8 Z"
+        fill="url(#sg)" filter="url(#glow)"/>
 </svg>
