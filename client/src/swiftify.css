@@ -4,8 +4,6 @@
    Inspired by thomasou.com aesthetic
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Syne:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap');
-
 /* ---- CSS Variables ---- */
 :root {
   color-scheme: dark;
@@ -360,6 +358,14 @@ a.sw-link, .sw-link {
   cursor: pointer;
 }
 a.sw-link:hover, .sw-link:hover { color: var(--pink-100); }
+
+button.sw-link,
+button.sw-hero__song-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+}
 
 /* ---- Buttons ---- */
 .sw-btn-natural {
@@ -804,7 +810,8 @@ a.sw-link:hover, .sw-link:hover { color: var(--pink-100); }
   background-clip: text;
   margin-bottom: 0.4rem;
 }
-.sw-album-info-header h2 {
+.sw-album-info-header h2,
+.sw-album-info-header p {
   font-family: var(--font-display);
   font-size: 0.85rem;
   font-weight: 600;
@@ -866,6 +873,8 @@ a.sw-link:hover, .sw-link:hover { color: var(--pink-100); }
   body::before { animation: none; }
   .sw-page > * { animation: none; }
   .sw-carousel-btn { transition: none; }
+  .sw-ticker__track { animation: none; }
+  .sw-hero__scroll-line::after { animation: none; }
 }
 
 /* ---- Carousel Base Styles ---- */

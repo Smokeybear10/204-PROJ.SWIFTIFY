@@ -1,6 +1,10 @@
 # Swiftify
 
-<img src="client/public/img/demo.gif" alt="Swiftify Demo UI" width="100%" style="border-radius: 8px; margin: 10px 0;" />
+**Live demo: [proj-swiftify.vercel.app](https://proj-swiftify.vercel.app/)**
+
+<img src="client/public/img/hero.gif" alt="Swiftify Hero" width="100%" style="border-radius: 8px; margin: 10px 0;" />
+
+<img src="client/public/img/albums.gif" alt="Swiftify Top Albums" width="100%" style="border-radius: 8px; margin: 10px 0;" />
 
 A full-stack Taylor Swift discography explorer built for CIS 5500 at Penn. Cinematic dark UI with GSAP scroll animations, IP-based location detection, and deep song analytics across every era.
 
@@ -24,15 +28,20 @@ A full-stack Taylor Swift discography explorer built for CIS 5500 at Penn. Cinem
 ## Project Structure
 
 ```
-client/          React frontend (Create React App)
+client/              React frontend (Create React App)
+  public/
+    img/
+      hero.gif       Home page hero section
+      albums.gif     Top albums grid
+      demo.gif       Full app walkthrough
   src/
-    pages/       HomePage, AlbumsPage, AlbumInfoPage, SongsPage
-    components/  NavBar, SongCard, LazyTable
-    config.json  Server host/port for API calls
-server/          Express backend
-  server.js      App entry point, route definitions
-  routes.js      All API route handlers
-  config.json    Database + server credentials
+    pages/           HomePage, AlbumsPage, AlbumInfoPage, SongsPage
+    components/      NavBar, SongCard, LazyTable
+    config.json      Server host/port for API calls
+server/              Express backend
+  server.js          App entry point, route definitions
+  routes.js          All API route handlers
+  config.json        Database + server credentials
 ```
 
 ## API Endpoints

@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import SongCard from '../components/SongCard';
 import { formatDuration, formatReleaseDate } from '../helpers/formatter';
 import fallbackAlbumsBackup from '../fallback/albums_backup.json';
-const config = require('../config.json');
+import config from '../config.json';
 
 export default function AlbumInfoPage() {
   const { album_id } = useParams();
@@ -19,6 +19,7 @@ export default function AlbumInfoPage() {
       .then(res => res.json())
       .then(resJson => {
         setAlbumData(resJson);
+        if (resJson.title) document.title = `${resJson.title} — Swiftify`;
         localStorage.setItem(`sw_cache_albuminfo_${album_id}`, JSON.stringify(resJson));
       })
       .catch(() => {
@@ -71,7 +72,7 @@ export default function AlbumInfoPage() {
         />
         <div>
           <h1>{albumData.title}</h1>
-          <h2>Released: {formatReleaseDate(albumData.release_date)}</h2>
+          <p>Released: {formatReleaseDate(albumData.release_date)}</p>
         </div>
       </div>
 
@@ -91,13 +92,13 @@ export default function AlbumInfoPage() {
               <tr key={song.song_id}>
                 <td style={{ color: 'var(--text-muted)', width: '3rem' }}>{song.number}</td>
                 <td>
-                  <span
+                  <button
+                    type="button"
                     className="sw-link"
                     onClick={() => setSelectedSongId(song.song_id)}
-                    style={{ cursor: 'pointer' }}
                   >
                     {song.title}
-                  </span>
+                  </button>
                 </td>
                 <td style={{ color: 'var(--text-muted)' }}>{song.plays?.toLocaleString()}</td>
                 <td style={{ color: 'var(--text-muted)' }}>{formatDuration(song.duration)}</td>

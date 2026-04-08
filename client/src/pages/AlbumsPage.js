@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import fallbackAlbums from '../fallback/albums.json';
-const config = require('../config.json');
+import config from '../config.json';
 
 export default function AlbumsPage() {
   const [albums, setAlbums] = useState([]);
 
   useEffect(() => {
+    document.title = 'Albums — Swiftify';
     fetch(`http://${config.server_host}:${config.server_port}/albums`)
       .then(res => res.json())
       .then(resJson => {
@@ -37,6 +38,7 @@ export default function AlbumsPage() {
             <img
               src={album.thumbnail_url}
               alt={`${album.title} album art`}
+              loading="lazy"
             />
             <h4>
               {album.title}

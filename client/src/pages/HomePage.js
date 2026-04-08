@@ -8,7 +8,7 @@ import fallbackRandom from '../fallback/random.json';
 import fallbackTopSongs from '../fallback/top_songs.json';
 import fallbackTopAlbums from '../fallback/top_albums.json';
 import fallbackAlbums from '../fallback/albums.json';
-const config = require('../config.json');
+import config from '../config.json';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,7 +38,7 @@ export default function HomePage() {
       setCurrentHeroIdx(prev => (prev + 1) % heroImages.length);
     }, 4500);
     return () => clearInterval(timer);
-  }, [currentHeroIdx]);
+  }, []);
 
   const handlePrev = (e) => {
     e.stopPropagation();
@@ -61,6 +61,7 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    document.title = 'Swiftify';
     fetch(`http://${config.server_host}:${config.server_port}/random`)
       .then(res => res.json())
       .then(resJson => {
@@ -270,12 +271,13 @@ export default function HomePage() {
           <div className="sw-hero__sotd">
             <div>
               <p className="sw-hero__sotd-label">Song of the Day</p>
-              <span
+              <button
+                type="button"
                 className="sw-hero__song-link"
                 onClick={() => setSelectedSongId(songOfTheDay.song_id)}
               >
                 {songOfTheDay.title}
-              </span>
+              </button>
             </div>
           </div>
         </div>
@@ -290,7 +292,8 @@ export default function HomePage() {
                 <img
                   key={src}
                   src={src}
-                  alt={`Taylor Swift slide ${idx}`}
+                  alt={`Taylor Swift photo ${idx + 1} of ${heroImages.length}`}
+                  loading={idx === 0 ? 'eager' : 'lazy'}
                   style={{
                     position: 'absolute', top: 0, left: 0,
                     width: '100%', height: '100%', objectFit: 'cover',
@@ -302,8 +305,8 @@ export default function HomePage() {
                 />
               );
             })}
-            <button className="sw-carousel-btn sw-carousel-btn--prev" onClick={handlePrev}>❮</button>
-            <button className="sw-carousel-btn sw-carousel-btn--next" onClick={handleNext}>❯</button>
+            <button className="sw-carousel-btn sw-carousel-btn--prev" onClick={handlePrev} aria-label="Previous photo">❮</button>
+            <button className="sw-carousel-btn sw-carousel-btn--next" onClick={handleNext} aria-label="Next photo">❯</button>
           </div>
         </div>
         <div className="sw-hero__scroll-cue" aria-hidden="true">
@@ -360,6 +363,7 @@ export default function HomePage() {
                   src={album.thumbnail_url}
                   alt={album.title}
                   className="sw-album-overlay-card__img"
+                  loading="lazy"
                 />
                 <div className="sw-album-overlay-card__overlay">
                   <div className="sw-album-overlay-card__title">{album.title}</div>
@@ -396,9 +400,9 @@ export default function HomePage() {
                 <tr key={song.song_id}>
                   <td>{String(i + 1).padStart(2, '0')}</td>
                   <td>
-                    <span className="sw-link" onClick={() => setSelectedSongId(song.song_id)}>
+                    <button type="button" className="sw-link" onClick={() => setSelectedSongId(song.song_id)}>
                       {song.title}
-                    </span>
+                    </button>
                   </td>
                   <td>
                     <NavLink className="sw-link" to={`/albums/${song.album_id}`}>

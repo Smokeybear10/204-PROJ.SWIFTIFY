@@ -6,12 +6,13 @@ import { NavLink } from 'react-router-dom';
 import SongCard from '../components/SongCard';
 import { formatDuration } from '../helpers/formatter';
 import fallbackSongs from '../fallback/search_songs.json';
-const config = require('../config.json');
+import config from '../config.json';
 
 export default function SongsPage() {
   const [pageSize, setPageSize] = useState(10);
   const [data, setData] = useState([]);
   const [selectedSongId, setSelectedSongId] = useState(null);
+  const [searchError, setSearchError] = useState(null);
 
   const [title, setTitle] = useState('');
   const [duration, setDuration] = useState([60, 660]);
@@ -22,6 +23,7 @@ export default function SongsPage() {
   const [explicit, setExplicit] = useState(false);
 
   useEffect(() => {
+    document.title = 'Songs — Swiftify';
     fetch(`http://${config.server_host}:${config.server_port}/search_songs`)
       .then(res => res.json())
       .then(resJson => {
@@ -51,6 +53,7 @@ export default function SongsPage() {
       .then(resJson => {
         const songsWithId = resJson.map((song) => ({ id: song.song_id, ...song }));
         setData(songsWithId);
+        setSearchError(null);
         localStorage.setItem(cacheKey, JSON.stringify(songsWithId));
       })
       .catch(() => {
@@ -58,7 +61,7 @@ export default function SongsPage() {
         if (cached) setData(JSON.parse(cached));
         else {
           setData(fallbackSongs.map(s => ({ id: s.song_id, ...s })));
-          alert('Backend offline. Displaying standard backup tracks.');
+          setSearchError('Backend offline — showing backup tracks.');
         }
       });
   };
@@ -89,6 +92,7 @@ export default function SongsPage() {
       .then(resJson => {
         const songsWithId = resJson.map((song) => ({ id: song.song_id, ...song }));
         setData(songsWithId);
+        setSearchError(null);
         localStorage.setItem(cacheKey, JSON.stringify(songsWithId));
       })
       .catch(() => {
@@ -96,7 +100,7 @@ export default function SongsPage() {
         if (cached) setData(JSON.parse(cached));
         else {
           setData(fallbackSongs.map(s => ({ id: s.song_id, ...s })));
-          alert('Backend offline. Displaying standard backup tracks.');
+          setSearchError('Backend offline — showing backup tracks.');
         }
       });
   };
@@ -105,9 +109,9 @@ export default function SongsPage() {
     {
       field: 'title', headerName: 'Title', width: 280,
       renderCell: (params) => (
-        <span className="sw-link" onClick={() => setSelectedSongId(params.row.song_id)} style={{ cursor: 'pointer' }}>
+        <button type="button" className="sw-link" onClick={() => setSelectedSongId(params.row.song_id)}>
           {params.value}
-        </span>
+        </button>
       ),
     },
     { field: 'duration', headerName: 'Duration', width: 100 },
@@ -239,6 +243,11 @@ export default function SongsPage() {
       </div>
 
       {/* Results */}
+      {searchError && (
+        <p style={{ color: 'var(--pink-300)', fontFamily: 'var(--font-body)', fontSize: '0.85rem', marginBottom: '1rem' }}>
+          {searchError}
+        </p>
+      )}
       <h2 className="sw-subheading">Results — {data.length} songs</h2>
       <DataGrid
         rows={data}

@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 
 export default function NavBar() {
   return (
-    <nav className="sw-navbar">
+    <nav className="sw-navbar" aria-label="Main navigation">
       <div className="sw-navbar__left">
         <NavLink to="/" className="sw-navbar__brand-container" style={{ textDecoration: 'none' }}>
           <div className="sw-navbar__brand-text">

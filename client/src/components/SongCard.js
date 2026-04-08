@@ -9,7 +9,7 @@ import {
 } from 'recharts';
 
 import { formatDuration } from '../helpers/formatter';
-const config = require('../config.json');
+import config from '../config.json';
 
 export default function SongCard({ songId, handleClose }) {
   const [songData, setSongData] = useState({});
@@ -52,6 +52,7 @@ export default function SongCard({ songId, handleClose }) {
     <Modal
       open={true}
       onClose={handleClose}
+      aria-labelledby="song-modal-title"
       style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
       <div className="sw-modal-box" style={{
@@ -68,6 +69,7 @@ export default function SongCard({ songId, handleClose }) {
         {/* Close button */}
         <button
           onClick={handleClose}
+          aria-label="Close"
           style={{
             position: 'absolute',
             top: '1rem',
@@ -87,7 +89,7 @@ export default function SongCard({ songId, handleClose }) {
         </button>
 
         {/* Title */}
-        <h1 className="sw-modal-title" style={{
+        <h1 id="song-modal-title" className="sw-modal-title" style={{
           fontFamily: "'Playfair Display', serif",
           fontStyle: 'italic',
           fontSize: '1.8rem',
